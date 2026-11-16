@@ -1,0 +1,12 @@
+flowchart TD
+    START[pdu] --> CHECK{Argumentos?}
+    CHECK -->|sin args / -h| HELP[Ayuda general]
+    CHECK -->|-V| VER[Versión]
+    CHECK -->|con args| CMD{Primer argumento}
+    CMD -->|comando o alias| SUB[Importa el módulo del comando]
+    CMD -->|ruta u opción| PIPE[all: pipeline completo]
+    CMD -->|desconocido| ERR[Error + sugerencia]
+    SUB --> M[mermaid: PNG/PDF desde .mmd]
+    SUB --> L[latex: SVG o Markdown procesado]
+    SUB --> MK[markdown: PDF desde Markdown]
+    SUB --> E[estructura: crear carpetas docs/]

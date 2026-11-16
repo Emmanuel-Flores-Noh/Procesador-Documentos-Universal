@@ -1,0 +1,10 @@
+graph TD
+    DATA[Directorio de datos] --> LINUX[Linux: ~/.local/share/pdu]
+    DATA --> WIN[Windows: %APPDATA%\\pdu]
+    LINUX --> BIN[bin/]
+    LINUX --> ESTILOS[estilos/]
+    LINUX --> PCONF[puppeteer-config.json]
+    WIN --> BINW[bin/]
+    WIN --> ESTILOSW[estilos/]
+    BIN --> MMDC[mmdc]
+    ESTILOS --> CSS[CSS de usuario]

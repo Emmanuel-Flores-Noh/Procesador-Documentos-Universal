@@ -1,0 +1,43 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+*.egg
+
+# --- Entornos virtuales ---
+.venv/
+venv/
+env/
+
+# --- Tests y cobertura ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# --- Salidas generadas por pdu ---
+out/
+docs/out/
+*-procesado.md
+formula.svg
+# Configuración de Puppeteer que generaban versiones anteriores dentro de docs/
+docs/puppeteer-config.json
+
+# --- Mermaid CLI / Node instalados localmente ---
+node_modules/
+bin/node_modules/
+
+# --- Claude Code (configuración local del usuario) ---
+.claude/settings.local.json
+
+# --- Editores y sistema operativo ---
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db

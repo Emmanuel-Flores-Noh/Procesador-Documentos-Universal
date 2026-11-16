@@ -1,0 +1,12 @@
+graph TD
+    U[Usuario] --> CLI[pdu CLI]
+    CLI --> MERMAID[Etapa Mermaid]
+    CLI --> LATEX[Etapa LaTeX]
+    CLI --> MARKDOWN[Etapa Markdown]
+    MERMAID --> MD[Archivos .mmd]
+    MERMAID --> PNG[PNG/PDF]
+    LATEX --> FORMULAS[Formulas LaTeX]
+    MARKDOWN --> PDF[PDF final]
+    MARKDOWN --> DIAGRAMAS_OUT[Diagramas compilados]
+    PNG --> MARKDOWN
+    FORMULAS --> MARKDOWN

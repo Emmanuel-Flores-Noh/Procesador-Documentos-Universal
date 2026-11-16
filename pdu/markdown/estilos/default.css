@@ -1,0 +1,151 @@
+/* Importar la fuente Inter desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@page {
+    size: letter;
+    margin: 1in;
+}
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #334155;
+    background-color: #ffffff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', system-ui, sans-serif;
+    page-break-after: avoid;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+h1 { font-size: 22pt; font-weight: 700; color: #0f172a; }
+h2 { font-size: 16pt; font-weight: 600; color: #1e293b; }
+h3 { font-size: 14pt; font-weight: 600; color: #1e293b; }
+h4 { font-size: 12pt; font-weight: 600; color: #475569; }
+
+p, ul, ol {
+    margin-top: 0;
+    margin-bottom: 11pt;
+    color: #334155;
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    max-height: 7.5in;
+    height: auto;
+    display: block;
+    margin: 2em auto;
+    border-radius: 8px;
+}
+
+/* Estilos para fórmulas matemáticas LaTeX (inline y bloques) */
+.math-inline {
+    display: inline;
+    white-space: nowrap;
+    line-height: normal;
+}
+
+img.math-inline-img {
+    display: inline-block !important;
+    vertical-align: -0.22em !important;
+    margin: 0 0.15em !important;
+    max-height: 1.6em;
+    width: auto;
+    border-radius: 0 !important;
+}
+
+.math-block {
+    display: block;
+    text-align: center;
+    margin: 1.4em auto;
+    page-break-inside: avoid;
+}
+
+img.math-block-img {
+    display: inline-block !important;
+    margin: 0 auto !important;
+    max-width: 100%;
+    height: auto;
+    border-radius: 0 !important;
+}
+
+.math-error {
+    color: #dc2626;
+    background-color: #fee2e2;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 9pt;
+}
+
+ul, ol {
+    padding-left: 24pt;
+}
+li {
+    margin-bottom: 4pt;
+}
+
+/* Tablas adaptadas a la paleta Slate */
+table {
+    margin-left: -70px;
+    border-collapse: collapse;
+    width: 750px;
+    table-layout: fixed;
+    margin-bottom: 1.5em;
+}
+th, td {
+    border: 1px solid #cbd5e1;
+    padding: 8pt 10pt;
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* Bloques de código con fondos grises armonizados */
+pre {
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 12pt;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 9.5pt;
+    line-height: 1.5;
+}
+code {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 9.5pt;
+    background-color: #f1f5f9;
+    color: #0f172a;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+pre code {
+    padding: 0;
+    background-color: transparent;
+}
+
+blockquote {
+    margin-left: 0;
+    padding-left: 14pt;
+    border-left: 4px solid #cbd5e1;
+    color: #475569;
+    font-style: italic;
+}
