@@ -8,7 +8,7 @@ pip install .
 pip install -e .
 ```
 
-Dependencias principales: `markdown`, `weasyprint`, `ziamath`.
+Dependencias principales: `markdown`, `pygments`, `weasyprint`, `ziamath`.
 
 ## Configuración local completa
 

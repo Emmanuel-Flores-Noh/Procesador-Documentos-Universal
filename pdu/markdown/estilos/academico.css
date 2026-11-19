@@ -74,7 +74,7 @@ img.math-block-img {
     background-color: #fdecea;
     padding: 2px 4px;
     border-radius: 2px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: "DejaVu Sans Mono", "Courier New", Courier, monospace;
     font-size: 9pt;
 }
 
@@ -106,13 +106,14 @@ pre {
     border: 1px solid #cccccc;
     padding: 10pt;
     border-radius: 2px;
-    overflow-x: auto;
-    font-family: "Courier New", Courier, monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: "DejaVu Sans Mono", "Courier New", Courier, monospace;
     font-size: 9pt;
     line-height: 1.5;
 }
 code {
-    font-family: "Courier New", Courier, monospace;
+    font-family: "DejaVu Sans Mono", "Courier New", Courier, monospace;
     font-size: 9pt;
     background-color: #f5f5f5;
     color: #1a1a1a;
@@ -122,6 +123,21 @@ code {
 pre code {
     padding: 0;
     background-color: transparent;
+}
+
+/* Resaltado de sintaxis (Pygments / codehilite) */
+/* Paleta base de Pygments para este tema (si se omite: 'default').
+   Se pueden sobrescribir tokens sueltos con reglas .codehilite .<token>. */
+:root {
+    --pdu-resaltado: vs;
+}
+.codehilite {
+    background-color: #f5f5f5;
+    border-radius: 2px;
+    margin: 1em 0;
+}
+.codehilite pre {
+    margin: 0;
 }
 
 blockquote {

@@ -48,3 +48,74 @@ def test_resolver_objetivo_archivo(tmp_path):
     md.write_text("hola", encoding="utf-8")
     docs_dir, docs = resolver_objetivo(str(md))
     assert docs and docs[0].nombre == "x"
+
+def _html_de(texto):
+    from types import SimpleNamespace
+    from pdu.markdown.filtros import ConvertirAHtml
+
+    ctx = SimpleNamespace(texto=texto, html_body="")
+    return ConvertirAHtml().procesar(ctx).html_body
+
+
+def test_codigo_con_lenguaje_se_resalta():
+    html = _html_de("```python\ndef f():\n    return 1\n```\n")
+    assert 'class="codehilite"' in html
+    assert '<span class="k">def</span>' in html
+
+
+def test_codigo_sin_lenguaje_no_se_colorea():
+    html = _html_de("```\ndef f():\n    return 1\n```\n")
+    assert '<span class="k">' not in html
+    assert "def f():" in html
+
+
+def test_codigo_lenguaje_desconocido_no_falla():
+    html = _html_de("```lenguajeinexistente\nhola mundo\n```\n")
+    assert "hola mundo" in html
+
+
+def test_css_resaltado():
+    from pdu.markdown.resaltado import css_resaltado
+
+    css = css_resaltado()
+    assert ".codehilite .k" in css
+    assert ".codehilite { background" not in css
+
+
+def test_plantilla_incluye_css_resaltado():
+    from types import SimpleNamespace
+    from pdu.markdown.filtros import AplicarPlantilla
+
+    ctx = SimpleNamespace(html_body="<p>x</p>", css="body{}", html_completo="")
+    html = AplicarPlantilla().procesar(ctx).html_completo
+    assert ".codehilite .k" in html
+    assert html.index(".codehilite .k") < html.index("body{}")
+
+
+def test_paleta_del_tema_declarada_y_por_defecto():
+    from pdu.markdown.resaltado import paleta_del_tema
+
+    assert paleta_del_tema(":root { --pdu-resaltado: tango; }") == "tango"
+    assert paleta_del_tema(":root { --pdu-resaltado: 'monokai'; }") == "monokai"
+    assert paleta_del_tema("body{}") == "default"
+    assert paleta_del_tema(":root { --pdu-resaltado: noexiste; }") == "default"
+
+
+def test_cada_tema_usa_su_paleta():
+    from pdu.markdown.resaltado import css_resaltado, css_resaltado_para_tema
+
+    _, css_compacto = cargar_estilo("compacto")
+    assert css_resaltado_para_tema(css_compacto) == css_resaltado("tango")
+    assert css_resaltado("tango") != css_resaltado("default")
+
+
+def test_tokens_del_tema_prevalecen_sobre_paleta():
+    from types import SimpleNamespace
+    from pdu.markdown.filtros import AplicarPlantilla
+
+    css_tema = ".codehilite .k { color: #123456; }"
+    ctx = SimpleNamespace(html_body="", css=css_tema, html_completo="")
+    html = AplicarPlantilla().procesar(ctx).html_completo
+    # La paleta base va antes: el token del tema gana por cascada y el resto se conserva.
+    assert html.index(".codehilite .k {") < html.index(css_tema)
+    assert ".codehilite .s " in html

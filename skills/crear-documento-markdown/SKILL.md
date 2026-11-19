@@ -37,10 +37,17 @@ alfabético** y se inserta un salto de página entre archivos. Por eso:
 - Un archivo equivale a un capítulo o sección que empieza en página nueva.
 - Empieza cada archivo con un único `# Título`; usa `##` y `###` dentro.
 
-**Markdown soportado.** Python-Markdown con las extensiones `fenced_code` y `tables`:
+**Markdown soportado.** Python-Markdown con las extensiones `fenced_code`, `codehilite` y `tables`:
 encabezados, listas, **negrita**, *cursiva*, enlaces, tablas, citas, bloques de código
 con lenguaje y HTML en línea. No hay listas de tareas, notas al pie ni tablas de
 contenido automáticas.
+- Los bloques de código se colorean con Pygments si indicas el lenguaje
+  (```` ```python ````, ```` ```bash ````…). Sin lenguaje salen en texto plano. El
+  código queda como texto en el PDF, así que se puede seleccionar y copiar.
+  Cada tema elige su paleta con `:root { --pdu-resaltado: <estilo Pygments>; }`
+  (por ejemplo `tango` o `monokai`; si falta, se usa `default`) y puede cambiar
+  tokens sueltos con reglas `.codehilite .k { color: ... }`. Los tokens que el tema
+  no declara usan la paleta base.
 - Deja una línea en blanco antes y después de listas, tablas y bloques de código
   (Python-Markdown es estricto con esto).
 - Indenta las listas anidadas con 4 espacios.

@@ -18,10 +18,15 @@ from .imagenes import (
 )
 from .pdf import generar_pdf
 from .plantilla import construir_html
+from .resaltado import CLASE_CSS, css_resaltado_para_tema
 
 PREFIJO_MARKDOWN = "CODE_BLOCK_IMG"
 SALTO_DE_PAGINA = '\n\n<div style="page-break-before: always;"></div>\n\n'
-EXTENSIONES_MARKDOWN = ("fenced_code", "tables")
+EXTENSIONES_MARKDOWN = ("fenced_code", "codehilite", "tables")
+CONFIG_EXTENSIONES = {
+    # guess_lang=False: sin ```lenguaje el bloque queda en texto plano.
+    "codehilite": {"css_class": CLASE_CSS, "guess_lang": False, "use_pygments": True},
+}
 
 
 class ConcatenarArchivos:
@@ -98,7 +103,9 @@ class ConvertirAHtml:
     def procesar(self, ctx: ContextoDocumento) -> ContextoDocumento:
         import markdown
 
-        ctx.html_body = markdown.markdown(ctx.texto, extensions=list(EXTENSIONES_MARKDOWN))
+        ctx.html_body = markdown.markdown(
+            ctx.texto, extensions=list(EXTENSIONES_MARKDOWN), extension_configs=CONFIG_EXTENSIONES
+        )
         return ctx
 
 
@@ -106,7 +113,7 @@ class AplicarPlantilla:
     nombre = "aplicar-plantilla"
 
     def procesar(self, ctx: ContextoDocumento) -> ContextoDocumento:
-        ctx.html_completo = construir_html(ctx.html_body, ctx.css)
+        ctx.html_completo = construir_html(ctx.html_body, css_resaltado_para_tema(ctx.css) + ctx.css)
         return ctx
 
 

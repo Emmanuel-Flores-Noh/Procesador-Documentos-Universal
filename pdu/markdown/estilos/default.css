@@ -85,7 +85,7 @@ img.math-block-img {
     background-color: #fee2e2;
     padding: 2px 4px;
     border-radius: 4px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: "DejaVu Sans Mono", "Courier New", Courier, monospace;
     font-size: 9pt;
 }
 
@@ -124,13 +124,14 @@ pre {
     border: 1px solid #e2e8f0;
     padding: 12pt;
     border-radius: 6px;
-    overflow-x: auto;
-    font-family: "Courier New", Courier, monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: "DejaVu Sans Mono", "Courier New", Courier, monospace;
     font-size: 9.5pt;
     line-height: 1.5;
 }
 code {
-    font-family: "Courier New", Courier, monospace;
+    font-family: "DejaVu Sans Mono", "Courier New", Courier, monospace;
     font-size: 9.5pt;
     background-color: #f1f5f9;
     color: #0f172a;
@@ -142,6 +143,21 @@ pre code {
     background-color: transparent;
 }
 
+/* Resaltado de sintaxis (Pygments / codehilite) */
+/* Paleta base de Pygments para este tema (si se omite: 'default').
+   Se pueden sobrescribir tokens sueltos con reglas .codehilite .<token>. */
+:root {
+    --pdu-resaltado: default;
+}
+.codehilite {
+    background-color: #f1f5f9;
+    border-radius: 6px;
+    margin: 1em 0;
+}
+.codehilite pre {
+    margin: 0;
+}
+
 blockquote {
     margin-left: 0;
     padding-left: 14pt;
@@ -149,3 +165,10 @@ blockquote {
     color: #475569;
     font-style: italic;
 }
+
+/* Colores propios que armonizan con la paleta slate del tema;
+   el resto de tokens usa la paleta base 'default' de Pygments. */
+.codehilite .k, .codehilite .kn, .codehilite .kd, .codehilite .kc { color: #7c3aed; font-weight: 600; }
+.codehilite .s, .codehilite .s1, .codehilite .s2, .codehilite .sa, .codehilite .si { color: #0f766e; }
+.codehilite .c, .codehilite .c1, .codehilite .cm, .codehilite .ch { color: #64748b; }
+.codehilite .nf, .codehilite .nc { color: #2563eb; }
