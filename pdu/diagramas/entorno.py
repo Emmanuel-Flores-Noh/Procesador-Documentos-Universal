@@ -87,6 +87,19 @@ def buscar_navegador() -> str | None:
     return next((c for c in _rutas_navegador_plataforma() if os.path.isfile(c)), None)
 
 
+def _escribir_si_cambia(ruta: str, contenido: str) -> str:
+    """Escribe `contenido` en `ruta` solo si difiere de lo que ya hay; devuelve la ruta."""
+    try:
+        with open(ruta, encoding="utf-8") as f:
+            if f.read() == contenido:
+                return ruta
+    except OSError:
+        pass
+    with open(ruta, "w", encoding="utf-8") as f:
+        f.write(contenido)
+    return ruta
+
+
 def preparar_puppeteer(directorio: str | None = None) -> str:
     """Escribe (solo si cambió) la configuración de Puppeteer y devuelve su ruta.
 
@@ -95,20 +108,29 @@ def preparar_puppeteer(directorio: str | None = None) -> str:
     """
     directorio = directorio or directorio_datos(crear=True)
     os.makedirs(directorio, exist_ok=True)
-    config_path = os.path.join(directorio, "puppeteer-config.json")
 
     config = {"args": ["--no-sandbox", "--disable-setuid-sandbox"]}
     navegador = buscar_navegador()
     if navegador:
         config["executablePath"] = navegador
-    contenido = json.dumps(config, indent=4)
+    return _escribir_si_cambia(os.path.join(directorio, "puppeteer-config.json"), json.dumps(config, indent=4))
 
-    try:
-        with open(config_path, encoding="utf-8") as f:
-            if f.read() == contenido:
-                return config_path
-    except OSError:
-        pass
-    with open(config_path, "w", encoding="utf-8") as f:
-        f.write(contenido)
-    return config_path
+
+# Mermaid dibuja por defecto las etiquetas con <foreignObject> (HTML dentro del
+# SVG), que WeasyPrint no renderiza: el texto desaparecería del PDF. Con
+# htmlLabels=false las etiquetas son <text> SVG nativo.
+CONFIG_MERMAID_SVG = {
+    "htmlLabels": False,
+    "flowchart": {"htmlLabels": False},
+    "class": {"htmlLabels": False},
+    "state": {"htmlLabels": False},
+}
+
+
+def preparar_config_mermaid_svg(directorio: str | None = None) -> str:
+    """Escribe (solo si cambió) la configuración de Mermaid para exportar SVG y devuelve su ruta."""
+    directorio = directorio or directorio_datos(crear=True)
+    os.makedirs(directorio, exist_ok=True)
+    return _escribir_si_cambia(
+        os.path.join(directorio, "mermaid-config-svg.json"), json.dumps(CONFIG_MERMAID_SVG, indent=4)
+    )

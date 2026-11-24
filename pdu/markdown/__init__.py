@@ -17,6 +17,7 @@ from .imagenes import (
     PATRON_HTML_IMG,
     PATRON_MMD,
     reemplazar_diagramas_por_png,
+    reemplazar_diagramas_por_svg,
     reemplazar_imagenes_locales,
     reemplazar_src_html,
 )
@@ -40,6 +41,7 @@ __all__ = [
     "procesar_documento",
     "procesar_markdown",
     "reemplazar_diagramas_por_png",
+    "reemplazar_diagramas_por_svg",
     "reemplazar_imagenes_locales",
     "reemplazar_src_html",
     "resolver_objetivo",

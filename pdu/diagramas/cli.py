@@ -10,9 +10,9 @@ from .descubrimiento import archivos_mmd_de_entrada
 from .tuberia import ejecutar_diagramas_autonomo
 
 DESCRIPCION = """\
-Compila diagramas Mermaid (.mmd) a PNG (fondo transparente) y PDF usando
-Mermaid CLI (mmdc). Los diagramas cuyo PNG y PDF son más recientes que el
-.mmd se omiten, salvo que se use --forzar."""
+Compila diagramas Mermaid (.mmd) a PNG (fondo transparente), PDF y SVG
+usando Mermaid CLI (mmdc). Los diagramas cuyo PNG, PDF y SVG son más
+recientes que el .mmd se omiten, salvo que se use --forzar."""
 
 EPILOGO = """\
 entrada aceptada:
@@ -20,7 +20,7 @@ entrada aceptada:
   carpeta/              todos los .mmd de la carpeta
   docs/                 si no hay .mmd directos, se usa docs/diagramas/
 
-salida (PNG y PDF juntos):
+salida (PNG, PDF y SVG juntos):
   un archivo            directorio actual
   una carpeta           ./out
   -o RUTA               la carpeta indicada

@@ -12,7 +12,7 @@ from .imagenes import (
     PATRON_HTML_IMG,
     PATRON_IMG,
     PATRON_MMD,
-    reemplazar_diagramas_por_png,
+    reemplazar_diagramas_por_svg,
     reemplazar_imagenes_locales,
     reemplazar_src_html,
 )
@@ -61,11 +61,11 @@ class ProtegerCodigo:
 
 
 class SustituirDiagramas:
-    """``![...](x.mmd)`` -> PNG compilado."""
+    """``![...](x.mmd)`` -> SVG compilado (vectorial)."""
     nombre = "sustituir-diagramas"
 
     def procesar(self, ctx: ContextoDocumento) -> ContextoDocumento:
-        ctx.texto = PATRON_MMD.sub(lambda m: reemplazar_diagramas_por_png(m, ctx.dir_png), ctx.texto)
+        ctx.texto = PATRON_MMD.sub(lambda m: reemplazar_diagramas_por_svg(m, ctx.dir_svg), ctx.texto)
         return ctx
 
 

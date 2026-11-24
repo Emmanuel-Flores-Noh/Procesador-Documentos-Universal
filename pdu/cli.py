@@ -30,7 +30,7 @@ COMANDOS: tuple[Comando, ...] = (
     Comando("all", ("todo", "pipeline", "0"),
             "Pipeline completo: diagramas, LaTeX y Markdown -> PDF.", ".cli:main_all"),
     Comando("mermaid", ("diagramas", "diagrama", "diagrams", "diagram", "1"),
-            "Compila diagramas Mermaid (.mmd) a PNG y PDF.", ".diagramas.cli:main"),
+            "Compila diagramas Mermaid (.mmd) a PNG, PDF y SVG.", ".diagramas.cli:main"),
     Comando("latex", ("2",),
             "Renderiza fórmulas LaTeX a SVG (expresión o Markdown).", ".latex.cli:main"),
     Comando("markdown", ("md", "3"),
@@ -109,7 +109,7 @@ def main_all(argv=None) -> int:
         epilog=(
             "salida:\n"
             "  un archivo            directorio actual\n"
-            "  una carpeta           ./out  (diagramas en ./out/diagramas/{png,pdf})\n"
+            "  una carpeta           ./out  (diagramas en ./out/diagramas/{png,pdf,svg})\n"
             "\n"
             "ejemplos:\n"
             "  pdu all docs\n"

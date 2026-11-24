@@ -19,6 +19,7 @@ class Diagrama:
     ruta_mmd: str
     ruta_png: str = ""
     ruta_pdf: str = ""
+    ruta_svg: str = ""
 
     @property
     def nombre(self) -> str:
@@ -30,6 +31,7 @@ class ContextoDiagramas:
     docs_dir: str
     out_png: str
     out_pdf: str
+    out_svg: str = ""
     archivos_md: list[str] = field(default_factory=list)
     subcarpeta: str | None = None
     referencias: list[str] = field(default_factory=list)
@@ -37,6 +39,7 @@ class ContextoDiagramas:
     pendientes: list[Diagrama] = field(default_factory=list)
     mmdc: str | None = None
     config_puppeteer: str | None = None
+    config_mermaid: str | None = None
     dependencias_ok: bool = True
     trabajos: int | None = None
     compilados: int = 0
@@ -68,3 +71,7 @@ class ContextoDocumento:
     @property
     def dir_png(self) -> str:
         return os.path.join(self.diagramas_out, "png")
+
+    @property
+    def dir_svg(self) -> str:
+        return os.path.join(self.diagramas_out, "svg")

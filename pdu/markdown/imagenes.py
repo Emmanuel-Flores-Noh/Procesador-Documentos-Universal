@@ -12,6 +12,7 @@ __all__ = [
     "PATRON_IMG",
     "PATRON_MMD",
     "reemplazar_diagramas_por_png",
+    "reemplazar_diagramas_por_svg",
     "reemplazar_imagenes_locales",
     "reemplazar_src_html",
 ]
@@ -41,13 +42,22 @@ def _separar_destino(destino: str) -> tuple[str, str]:
     return destino, ""
 
 
+def _reemplazar_diagrama(match: re.Match, directorio: str, extension: str) -> str:
+    nombre_base = os.path.basename(match.group(2))
+    ruta = os.path.abspath(os.path.join(directorio, f"{nombre_base}.{extension}"))
+    if not os.path.exists(ruta):
+        print(f"  [Advertencia] Falta el {extension.upper()} compilado de '{nombre_base}.mmd' ({ruta}).")
+    return f"![{match.group(1)}]({Path(ruta).as_uri()})"
+
+
+def reemplazar_diagramas_por_svg(match: re.Match, dir_svg: str) -> str:
+    """``![alt](x.mmd)`` -> ``![alt](file:///.../svg/x.svg)`` (vectorial, sin pérdida de calidad)."""
+    return _reemplazar_diagrama(match, dir_svg, "svg")
+
+
 def reemplazar_diagramas_por_png(match: re.Match, dir_png: str) -> str:
     """``![alt](x.mmd)`` -> ``![alt](file:///.../png/x.png)``."""
-    nombre_base = os.path.basename(match.group(2))
-    ruta_png = os.path.abspath(os.path.join(dir_png, f"{nombre_base}.png"))
-    if not os.path.exists(ruta_png):
-        print(f"  [Advertencia] Falta el PNG compilado de '{nombre_base}.mmd' ({ruta_png}).")
-    return f"![{match.group(1)}]({Path(ruta_png).as_uri()})"
+    return _reemplazar_diagrama(match, dir_png, "png")
 
 
 def reemplazar_imagenes_locales(match: re.Match, subcarpeta: str) -> str:

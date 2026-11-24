@@ -18,9 +18,12 @@ def trabajos_por_defecto() -> int:
     return max(1, min(TRABAJOS_MAXIMOS_POR_DEFECTO, os.cpu_count() or 1))
 
 
-def _ejecutar_mmdc(mmdc: str, config: str, entrada: str, salida: str) -> None:
+def _ejecutar_mmdc(mmdc: str, config: str, entrada: str, salida: str, config_mermaid: str | None = None) -> None:
+    comando = [mmdc, "-q", "-p", config, "-i", entrada, "-o", salida, "-b", "transparent"]
+    if config_mermaid:
+        comando += ["-c", config_mermaid]
     resultado = subprocess.run(
-        [mmdc, "-q", "-p", config, "-i", entrada, "-o", salida, "-b", "transparent"],
+        comando,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.PIPE,
         text=True,
@@ -30,25 +33,36 @@ def _ejecutar_mmdc(mmdc: str, config: str, entrada: str, salida: str) -> None:
         raise RuntimeError(detalle[-1] if detalle else f"mmdc terminó con código {resultado.returncode}")
 
 
-def compilar_diagrama(archivo, ruta_png, ruta_pdf, config_puppeteer, mmdc=None) -> bool:
-    """Compila `archivo` (.mmd) a PNG y PDF. Devuelve True si ambos se generaron."""
+def compilar_diagrama(
+    archivo, ruta_png, ruta_pdf, config_puppeteer, mmdc=None, ruta_svg=None, config_mermaid=None
+) -> bool:
+    """Compila `archivo` (.mmd) a PNG, PDF y (si se indica `ruta_svg`) SVG.
+
+    Devuelve True si se generaron todas las salidas. El SVG se exporta con
+    `config_mermaid` (etiquetas SVG nativas, compatibles con WeasyPrint).
+    """
     nombre = os.path.basename(archivo)
     mmdc = mmdc or buscar_mmdc()
     if not mmdc:
         print(f"  [Error] {nombre}: no se encontró Mermaid CLI (mmdc).")
         return False
     try:
-        for salida in (ruta_png, ruta_pdf):
+        salidas = [(ruta_png, None), (ruta_pdf, None)]
+        if ruta_svg:
+            salidas.append((ruta_svg, config_mermaid))
+        for salida, config in salidas:
             os.makedirs(os.path.dirname(os.path.abspath(salida)), exist_ok=True)
-            _ejecutar_mmdc(mmdc, config_puppeteer, archivo, salida)
+            _ejecutar_mmdc(mmdc, config_puppeteer, archivo, salida, config)
     except (RuntimeError, OSError) as e:
         print(f"  [Error] {nombre}: {e}")
         return False
-    print(f"  [OK] {nombre} -> PNG y PDF")
+    print(f"  [OK] {nombre} -> {'PNG, PDF y SVG' if ruta_svg else 'PNG y PDF'}")
     return True
 
 
-def compilar_varios(diagramas, config_puppeteer, mmdc, trabajos: int | None = None) -> tuple[int, int]:
+def compilar_varios(
+    diagramas, config_puppeteer, mmdc, trabajos: int | None = None, config_mermaid: str | None = None
+) -> tuple[int, int]:
     """Compila una lista de `Diagrama` en paralelo. Devuelve (compilados, fallidos).
 
     Cada `mmdc` lanza su propio navegador, así que el paralelismo reduce mucho
@@ -62,7 +76,10 @@ def compilar_varios(diagramas, config_puppeteer, mmdc, trabajos: int | None = No
     print(f"Compilando {len(diagramas)} diagrama(s) con {modo} ...")
 
     def compilar(d):
-        return compilar_diagrama(d.ruta_mmd, d.ruta_png, d.ruta_pdf, config_puppeteer, mmdc)
+        return compilar_diagrama(
+            d.ruta_mmd, d.ruta_png, d.ruta_pdf, config_puppeteer, mmdc,
+            ruta_svg=d.ruta_svg or None, config_mermaid=config_mermaid,
+        )
 
     if trabajos == 1:
         resultados = [compilar(d) for d in diagramas]

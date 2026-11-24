@@ -2,7 +2,7 @@
 
 `pdu` es una herramienta de línea de comandos para transformar documentación técnica en PDF, integrando tres etapas:
 
-1. **Mermaid**: compila diagramas `.mmd` a PNG y PDF.
+1. **Mermaid**: compila diagramas `.mmd` a PNG, PDF y SVG.
 2. **LaTeX**: renderiza fórmulas matemáticas a SVG embebido en HTML.
 3. **Markdown**: convierte documentos Markdown a PDF con plantilla HTML/CSS.
 

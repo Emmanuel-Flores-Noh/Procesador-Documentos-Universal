@@ -79,22 +79,26 @@ def resolver_ruta_diagrama(referencia: str, docs_dir: str, subcarpeta: str) -> s
     return None
 
 
-def esta_actualizado(ruta_mmd: str, ruta_png: str, ruta_pdf: str) -> bool:
-    """True si el PNG y el PDF existen y son más recientes que el .mmd."""
+def esta_actualizado(ruta_mmd: str, *salidas: str) -> bool:
+    """True si todas las `salidas` (PNG, PDF, SVG...) existen y son más recientes que el .mmd."""
     try:
         origen = os.path.getmtime(ruta_mmd)
-        return os.path.getmtime(ruta_png) >= origen and os.path.getmtime(ruta_pdf) >= origen
+        return all(os.path.getmtime(s) >= origen for s in salidas if s)
     except OSError:
         return False
 
 
-def crear_diagrama(referencia: str, ruta_mmd: str, out_png: str, out_pdf: str) -> Diagrama:
+def crear_diagrama(
+    referencia: str, ruta_mmd: str, out_png: str, out_pdf: str, out_svg: str | None = None
+) -> Diagrama:
+    """`out_svg` vacío o None guarda el SVG junto al PNG."""
     nombre_base = os.path.splitext(os.path.basename(ruta_mmd))[0]
     return Diagrama(
         referencia=referencia,
         ruta_mmd=ruta_mmd,
         ruta_png=os.path.join(out_png, f"{nombre_base}.png"),
         ruta_pdf=os.path.join(out_pdf, f"{nombre_base}.pdf"),
+        ruta_svg=os.path.join(out_svg or out_png, f"{nombre_base}.svg"),
     )
 
 

@@ -1,6 +1,6 @@
 ---
 name: crear-diagrama-mermaid
-description: Crea diagramas Mermaid (.mmd) en docs/diagramas/ para que pdu los compile a PNG y PDF, y los enlaza desde los documentos Markdown. Úsala cuando el usuario pida un diagrama de flujo, de arquitectura, de secuencia, de clases, entidad-relación, de estados, un Gantt, etc. NO compila; al terminar indica los comandos para revisar y compilar.
+description: Crea diagramas Mermaid (.mmd) en docs/diagramas/ para que pdu los compile a PNG, PDF y SVG, y los enlaza desde los documentos Markdown. Úsala cuando el usuario pida un diagrama de flujo, de arquitectura, de secuencia, de clases, entidad-relación, de estados, un Gantt, etc. NO compila; al terminar indica los comandos para revisar y compilar.
 ---
 
 # Crear diagramas Mermaid para pdu
@@ -13,7 +13,7 @@ convertirlo. Al final le dices qué comandos ejecutar.
 
 - Guarda el archivo en `docs/diagramas/<nombre>.mmd` (créala si no existe).
 - Usa `<nombre>` en kebab-case, sin tildes ni espacios: `flujo-auth.mmd`,
-  `arquitectura-general.mmd`. El PNG y el PDF compilados tendrán ese mismo nombre.
+  `arquitectura-general.mmd`. El PNG, el PDF y el SVG compilados tendrán ese mismo nombre.
 - Antes de crear uno, revisa `docs/diagramas/` para no duplicar un diagrama existente;
   si ya existe uno parecido, propón modificarlo.
 - El archivo contiene **solo** código Mermaid: sin cercas ```` ```mermaid ```` y sin
@@ -74,7 +74,7 @@ referencia en el lugar adecuado (o indícale al usuario dónde ponerla):
 ![Flujo de autenticación](flujo-auth.mmd)
 ```
 
-pdu sustituye esa referencia por el PNG compilado al generar el PDF. Para redactar el
+pdu sustituye esa referencia por el SVG compilado al generar el PDF. Para redactar el
 documento sigue la skill `crear-documento-markdown`.
 
 ## 6. Al terminar (sin compilar)
@@ -86,7 +86,7 @@ Responde con:
 2. Los comandos para revisar y compilar, con las rutas reales:
 
 ```bash
-# Compilar solo este diagrama -> ./flujo-auth.png y ./flujo-auth.pdf (para revisarlo)
+# Compilar solo este diagrama -> ./flujo-auth.png, .pdf y .svg (para revisarlo)
 pdu mermaid docs/diagramas/flujo-auth.mmd
 
 # Compilar todos los diagramas de docs/ -> ./out (omite los que ya están al día)

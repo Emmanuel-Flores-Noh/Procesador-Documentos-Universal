@@ -28,3 +28,40 @@ def test_esta_actualizado_false_si_falta(tmp_path):
     mmd = tmp_path / "a.mmd"
     mmd.write_text("x")
     assert esta_actualizado(str(mmd), str(tmp_path / "a.png"), str(tmp_path / "a.pdf")) is False
+
+
+def test_esta_actualizado_exige_svg(tmp_path):
+    mmd = tmp_path / "a.mmd"
+    mmd.write_text("x")
+    for ext in ("png", "pdf"):
+        (tmp_path / f"a.{ext}").write_text("x")
+    salidas = [str(tmp_path / f"a.{e}") for e in ("png", "pdf")]
+    assert esta_actualizado(str(mmd), *salidas) is True
+    assert esta_actualizado(str(mmd), *salidas, str(tmp_path / "a.svg")) is False
+
+
+def test_crear_diagrama_rutas_svg(tmp_path):
+    from pdu.diagramas.descubrimiento import crear_diagrama
+    d = crear_diagrama("flujo", "/x/flujo.mmd", "/o/png", "/o/pdf", "/o/svg")
+    assert d.ruta_svg == os.path.join("/o/svg", "flujo.svg")
+
+
+def test_compilar_diagrama_genera_svg_con_config(tmp_path):
+    from pdu.diagramas import compilador
+    llamadas = []
+    with patch.object(compilador, "_ejecutar_mmdc", lambda *a: llamadas.append(a)):
+        ok = compilador.compilar_diagrama(
+            "a.mmd", str(tmp_path / "png" / "a.png"), str(tmp_path / "pdf" / "a.pdf"), "pp.json", "mmdc",
+            ruta_svg=str(tmp_path / "svg" / "a.svg"), config_mermaid="cfg.json",
+        )
+    assert ok
+    assert [Path(a[3]).suffix for a in llamadas] == [".png", ".pdf", ".svg"]
+    assert llamadas[-1][4] == "cfg.json" and llamadas[0][4] is None
+    assert (tmp_path / "svg").is_dir()
+
+
+def test_sustituir_diagramas_usa_svg(tmp_path):
+    from pdu.markdown.imagenes import PATRON_MMD, reemplazar_diagramas_por_svg
+    (tmp_path / "flujo.svg").write_text("<svg/>")
+    res = PATRON_MMD.sub(lambda m: reemplazar_diagramas_por_svg(m, str(tmp_path)), "![F](flujo.mmd)")
+    assert res == f"![F]({(tmp_path / 'flujo.svg').as_uri()})"

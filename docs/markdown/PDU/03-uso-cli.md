@@ -17,7 +17,7 @@ Si se escribe mal un comando, `pdu` sugiere el más parecido (por ejemplo, `pdu 
 | Comando      | Alias                                      | Descripción                                   |
 |--------------|--------------------------------------------|-----------------------------------------------|
 | `all`        | `todo`, `pipeline`, `0`                    | Pipeline completo hasta PDF.                  |
-| `mermaid`    | `diagramas`, `diagrama`, `diagrams`, `1`   | Diagramas `.mmd` a PNG y PDF.                 |
+| `mermaid`    | `diagramas`, `diagrama`, `diagrams`, `1`   | Diagramas `.mmd` a PNG, PDF y SVG.            |
 | `latex`      | `2`                                        | Fórmulas LaTeX a SVG.                         |
 | `markdown`   | `md`, `3`                                  | Documentos Markdown a PDF.                    |
 | `estructura` | `init`                                     | Crea la estructura de carpetas `docs/`.       |
@@ -67,7 +67,7 @@ pdu estructura docs/MiProyecto --no-confirmation   # o -nc / -y
 - Un solo archivo de entrada: se guarda en el directorio actual con el nombre original.
 - Un directorio: se crea `./out` en el directorio actual (también para `pdu all`).
 - Se puede definir la carpeta de salida con `-o` / `--out`.
-- Los diagramas cuyo PNG y PDF son más recientes que el `.mmd` no se recompilan.
+- Los diagramas cuyo PNG, PDF y SVG son más recientes que el `.mmd` no se recompilan.
 
 ## Variables de entorno
 
